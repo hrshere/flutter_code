@@ -1,46 +1,82 @@
+
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:login_implement_sharedpref/screens/home_screen.dart';
+import 'package:login_implement_sharedpref/screens/login_screen.dart';
+import 'package:login_implement_sharedpref/screens/splash_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:listview_navigation_api/screens/first_screen.dart';
-import 'package:listview_navigation_api/screens/second_screen.dart';
-
-void main()=> runApp(const ListviewApp());
-
-class ListviewApp extends StatefulWidget {
-  const ListviewApp({Key? key}) : super(key: key);
-
-  @override
-  State<ListviewApp> createState() => _ListviewAppState();
+void main() {
+  runApp(
+      MaterialApp(
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const MainApp(),
+          // '/splash':(context) => const SplashApp(),
+          '/login': (context) => LoginApp(),
+          '/home': (context) => const HomeApp()
+        },
+      )
+  );
 }
 
-class _ListviewAppState extends State<ListviewApp> {
+class MainApp extends StatefulWidget {
+  const MainApp({Key? key}) : super(key: key);
+
+  @override
+  State<MainApp> createState() => MainAppState();
+}
+
+class MainAppState extends State<MainApp> {
+  static const String KEYLOGIN = "login";
+  @override
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    WhereToGo();
+
+
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return
 
-      initialRoute: '/',
-      routes: {
-        '/second':(context) => const SecondScreen(),
-      },
-
-      home: Scaffold(
-        drawer: const Drawer(),
+       Scaffold(
         appBar: AppBar(
-          title: const Text("Listview App"),
-          actions: [
-            PopupMenuButton(itemBuilder: (context)=>[
-              const PopupMenuItem(value:1,child: Icon(Icons.settings,color: Colors.red,)),
-              const PopupMenuItem(value:1,child: Icon(Icons.logout,color: Colors.red,))
-            ])
-          ],
+          title: Text('my splash screen'),
         ),
 
-
-        body: const FirstScreen(),
-      ),
     );
   }
+
+  void WhereToGo() async {
+    var sharedpref = await SharedPreferences.getInstance();
+
+    var isLoggedIn = sharedpref.getBool(KEYLOGIN);
+
+    Timer(
+        Duration(seconds: 5),
+            () {
+          if(isLoggedIn!=null){
+            if(isLoggedIn){
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => HomeApp()));
+            }
+            else{
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => LoginApp()));
+            }
+          }else
+
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => LoginApp()));
+        } );
+
+  }
 }
-
-
-
-
