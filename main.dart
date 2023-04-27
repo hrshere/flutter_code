@@ -1,65 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:untitled2/Screens/display_screen.dart';
 
-void main() => runApp( const LabelTextApp());
+import 'package:untitled2/Screens/form_screen.dart';
 
-class LabelTextApp extends StatefulWidget {
-  const LabelTextApp({Key? key}) : super(key: key);
+void main()=> runApp(MyApp());
 
-  @override
-  State<LabelTextApp> createState() => _LabelTextAppState();
-}
-
-class _LabelTextAppState extends State<LabelTextApp> {
-  // final nameTextEditingController = TextEditingController();
-
-
-
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  // }
-  //
-  // @override
-  // void dispose() {
-  //   // TODO: implement dispose
-  //   super.dispose();
-  // }
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
-    return MaterialApp(
-      home:Scaffold(
-
-        appBar: AppBar(
-          title: const Text("Text on Label App"),
-        ),
-
-        body: Column(
-
-          children: [
-
-             // Text("Welcome ${nameTextEditingController.text}",style: TextStyle(fontSize: 30),),
-
-            TextField(
-              // controller: nameTextEditingController,
-              onChanged: (text) {
-                print('First text field: $text');
-              },
-            ),
-
-            ElevatedButton(
-                onPressed:() => {
-                  setState((){
-
-                  })
-                },
-                child: const Text("Print Text"),
-            )
-          ],
-        ),
-      )
+    return GetMaterialApp(
+      initialRoute: '/',
+      getPages: [
+        GetPage(name: '/', page: ()=> FormScreen()),
+        GetPage(name: '/display', page: ()=> DisplayScreen())
+      ],
+      debugShowCheckedModeBanner: false,
+      home: FormScreen(),
     );
   }
 }
